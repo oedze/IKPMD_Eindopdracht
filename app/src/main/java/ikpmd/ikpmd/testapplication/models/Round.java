@@ -4,4 +4,6 @@ public class Round {
 
     public String tester;
 
+    public Round() {}
+
 }
