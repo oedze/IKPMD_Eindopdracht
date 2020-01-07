@@ -1,87 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateTestActivity">
-
-    <EditText
-        android:id="@+id/text_input_test_number"
-        android:layout_width="wrap_content"
+    android:layout_width="match_parent">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Testnummer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/text_input_made_by"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Gemaakt door"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_test_number" />
-
-    <EditText
-        android:id="@+id/text_input_test_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Test naam"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_made_by" />
-
-    <EditText
-        android:id="@+id/text_input_test_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Test Omschrijving"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_test_name" />
-
-    <EditText
-        android:id="@+id/text_input_test_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Test Version"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_test_description" />
-
-    <ListView
-        android:layout_width="409dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_test_version">
 
         <EditText
-            android:id="@+id/editText8"
+            android:id="@+id/text_input_test_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            android:ems="10"
+            android:hint="Test  Naam" />
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintHorizontal_bias="0.498"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent" -->
+
+        <EditText
+            android:id="@+id/text_input_test_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_input_test_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            android:ems="10"
+            android:hint="Test Nummer"
+            android:inputType="textPersonName" />
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/text_input_test_version" -->
+
+
+        <EditText
+            android:id="@+id/text_input_made_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
-            android:visibility="visible" />
-    </ListView>
+            android:layout_below="@id/text_input_test_number"
+            android:layout_centerHorizontal="true"
+            android:hint="Gemaakt door"/>
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/text_input_test_name" -->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <EditText
+            android:id="@+id/text_input_test_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:layout_below="@id/text_input_made_by"
+            android:layout_centerHorizontal="true"
+            android:hint="Test Omschrijving"/>
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/text_input_made_by" -->
+
+
+        <EditText
+            android:id="@+id/text_input_test_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:layout_below="@id/text_input_test_description"
+            android:layout_centerHorizontal="true"
+            android:hint="Test Version" />
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/text_input_test_description"-->
+
+        <Button
+            android:id="@+id/button_add_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text_input_test_version"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            android:text="Add Pre Contion"/>
+
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintHorizontal_bias="0.498"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toBottomOf="@+id/text_input_test_number" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPreConditions"
+            android:layout_width="match_parent"
+            android:layout_below="@id/button_add_pre"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/create_test_vertical_spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_add_pre">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
+</ScrollView>
