@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public static String TAG = "LOGIN";
 
+    private Intent dashboardIntent;
+
     EditText emailField;
     EditText passwordField;
     Button logInButton;
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+
+        dashboardIntent = new Intent(this, DashhboardActivity.class);
 
         logInButton = findViewById(R.id.button_login_login);
         emailField = findViewById(R.id.edittext_login_email);
@@ -52,20 +56,22 @@ public class LoginActivity extends AppCompatActivity {
                 trimInputs();
 
                 if(isValid()){
-                    Toast.makeText(getApplicationContext(), "Goede invoer", Toast.LENGTH_SHORT).show();
-                    //TODO add to firestore login functionality
-                    FirebaseService.login(emailField.getText().toString(), passwordField.getText().toString(), new OnSuccessListener() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            startActivity(intent);
-                        }
-                    }, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
 
+                    FirebaseService.login(emailField.getText().toString(), passwordField.getText().toString(),
+                            new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    startActivity(dashboardIntent);
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println(emailField.toString());
+                                    e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(),"Invalid credentials", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
-                        }
-                    });
                 }else{
                     Toast.makeText(getApplicationContext(),"Foute invoer", Toast.LENGTH_SHORT).show();
                 }
