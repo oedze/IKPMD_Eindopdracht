@@ -70,7 +70,6 @@ public class FirebaseService {
     public static void getCollection(String collection, OnSuccessListener<QuerySnapshot> successListener, OnFailureListener failureListener) {
 
         String path = "/users/"+getUser().getEmail()+"/"+collection;
-        System.out.println(path);
 
         db.collection(path).get()
                 .addOnSuccessListener(successListener)
