@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "679622729603",
+    "firebase_url": "https://ikpmd-6e252.firebaseio.com",
+    "project_id": "ikpmd-6e252",
+    "storage_bucket": "ikpmd-6e252.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679622729603:android:212ff67a57b17c602660b6",
+        "android_client_info": {
+          "package_name": "ikpmd.ikpmd.testapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679622729603-sv9jamfl3tqjug3jg5hk20se78o12876.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ikpmd.ikpmd.testapplication",
+            "certificate_hash": "0d4520917019eca5bc1c33e4b1de37433e6959e0"
+          }
+        },
+        {
+          "client_id": "679622729603-hfbfgfu7drjto8lt94etol28i2kd9rlb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiWsa_G9P4YJGRbOMpLMCkizVfDD_flrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679622729603-hfbfgfu7drjto8lt94etol28i2kd9rlb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
