@@ -96,8 +96,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rv_create_test_pre_conditions"
             android:layout_centerHorizontal="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_create_test_pre_conditions"
             android:layout_marginTop="@dimen/vertical_spacing"
             android:text="Voeg testData toe" />
 
@@ -106,6 +104,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_create_test_add_data"
+            android:layout_marginTop="@dimen/vertical_spacing"
+            ></androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/button_create_test_add_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_create_test_data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/vertical_spacing"
+            android:text="Voeg testData toe" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_create_test_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_create_test_add_step"
             android:layout_marginTop="@dimen/vertical_spacing"
             ></androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>

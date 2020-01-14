@@ -24,7 +24,7 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/button_remove_step"
+                android:id="@+id/button_addstep_remove"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -34,7 +34,7 @@
         <EditText
             android:id="@+id/edittext_addstep_expected_result"
             android:layout_width="wrap_content"
-            android:layout_height="252dp"
+            android:layout_height="wrap_content"
             android:ems="20"
             android:hint="Verwacht resulstaat"
             android:textSize="20sp" />

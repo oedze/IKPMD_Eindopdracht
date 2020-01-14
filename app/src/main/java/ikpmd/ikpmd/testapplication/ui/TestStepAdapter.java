@@ -16,9 +16,8 @@ import java.util.List;
 
 import ikpmd.ikpmd.testapplication.R;
 import ikpmd.ikpmd.testapplication.models.Step;
-import ikpmd.ikpmd.testapplication.models.TestData;
 
-public class TestStepAdapter {
+public class TestStepAdapter extends RecyclerView.Adapter<TestStepAdapter.ViewHolder>{
     private List<Step> testStepList;
     private LayoutInflater inflater;
     private TestStepAdapter.StepChangedListener stepChangedListener;
@@ -33,36 +32,36 @@ public class TestStepAdapter {
     @NonNull
     @Override
     public TestStepAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recyclerview_adddata, parent, false);
+        View view = inflater.inflate(R.layout.recyclerview_addstep, parent, false);
         return new TestStepAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TestStepAdapter.ViewHolder holder, int position) {
         Step data = testStepList.get(position);
-        holder.keyText.setText(data.get());
-        holder.valueText.setText(data.getValue());
+        holder.stepName.setText(data.getDetails());
+        holder.stepExpectedResult.setText(data.getExpectedResult());
     }
 
     @Override
     public int getItemCount() {
-        return testDataList.size();
+        return testStepList.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements TextWatcher, View.OnClickListener{
-        EditText keyText;
-        EditText valueText;
+        EditText stepName;
+        EditText stepExpectedResult;
         Button removeButton;
 
         ViewHolder(View itemView){
             super(itemView);
-            keyText = itemView.findViewById(R.id.edittext_testdata_key);
-            valueText = itemView.findViewById(R.id.edittext_testdata_value);
-            removeButton = itemView.findViewById(R.id.button_testdata_remove);
+            stepName = itemView.findViewById(R.id.edittext_addstep_step);
+            stepExpectedResult = itemView.findViewById(R.id.edittext_addstep_expected_result);
+            removeButton = itemView.findViewById(R.id.button_addstep_remove);
 
-            keyText.addTextChangedListener(this);
-            valueText.addTextChangedListener(this);
+            stepName.addTextChangedListener(this);
+            stepExpectedResult.addTextChangedListener(this);
             removeButton.setOnClickListener(this);
         }
 
@@ -72,7 +71,7 @@ public class TestStepAdapter {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if(stepChangedListener != null){
-                stepChangedListener.onTestStepListChange(new TestData(keyText.getText().toString(),valueText.getText().toString()), getAdapterPosition());
+                stepChangedListener.onTestStepListChange(new Step(stepName.getText().toString(),stepExpectedResult.getText().toString()), getAdapterPosition());
             }
         }
 
@@ -100,7 +99,7 @@ public class TestStepAdapter {
     }
 
     public interface StepChangedListener{
-        void onTestStepListChange(TestData  newData, int position);
+        void onTestStepListChange(Step newStep, int position);
     }
 
     public interface TestStepCloseButtonPressedListener{
