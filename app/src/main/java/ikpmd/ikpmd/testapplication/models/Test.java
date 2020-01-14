@@ -3,6 +3,7 @@ package ikpmd.ikpmd.testapplication.models;
 public class Test {
 
     public String id;
+    public String project;
     public String author;
     public String description;
     public String reviewer;
@@ -12,8 +13,9 @@ public class Test {
 
     public Test() {}
 
-    public Test(String id, String author, String description, String reviewer, String version, String[] prerequisites, String[] data) {
+    public Test(String id, String project, String author, String description, String reviewer, String version, String[] prerequisites, String[] data) {
         this.id = id;
+        this.project = project;
         this.author = author;
         this.description = description;
         this.reviewer = reviewer;
