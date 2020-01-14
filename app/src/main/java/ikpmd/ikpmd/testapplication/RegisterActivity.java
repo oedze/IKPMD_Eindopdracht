@@ -1,16 +1,22 @@
 package ikpmd.ikpmd.testapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.util.logging.Logger;
 
+import ikpmd.ikpmd.testapplication.services.FirebaseService;
 import ikpmd.ikpmd.testapplication.utils.Validator;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -45,7 +51,26 @@ public class RegisterActivity extends AppCompatActivity {
                 trimInputs();
                 if(isValid()){
                     //Toast.makeText(getApplicationContext(), "Goede invoer", Toast.LENGTH_SHORT).show();
-                    //TODO add firestore service to create account;
+                    //TODO add firestore service to create account;\
+                    FirebaseService.register(
+                            email.getText().toString(),
+                            password.getText().toString(),
+                            name.getText().toString(), new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Toast.makeText(getApplicationContext(), "Succesvolle registratie", Toast.LENGTH_SHORT).show();
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    email.setText("");
+                                    password.setText("");
+                                    confirmPassword.setText("");
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Dit email address is al in gebruik", Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.TOP, 0, 0);
+                                    toast.show();
+                                }
+                            });
                 }else{
                     Toast.makeText(getApplicationContext(),"Foute invoer",Toast.LENGTH_SHORT).show();
                 }
