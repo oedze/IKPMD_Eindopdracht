@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -12,24 +16,56 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ikpmd.ikpmd.testapplication.R;
+import ikpmd.ikpmd.testapplication.models.Project;
+import ikpmd.ikpmd.testapplication.services.ProjectService;
+
+import static ikpmd.ikpmd.testapplication.R.layout.activity_project_list_view;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
+    List<Project> projects = new ArrayList<>();
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+
+
+        Project pj = new Project();
+        pj.setName("Test");
+        projects.add(pj);
+
+
+        final ArrayAdapter adapter = new ArrayAdapter<Project>(root.getContext(), activity_project_list_view, projects);
+
+        ListView listView = root.findViewById(R.id.project_list);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
             }
         });
+
+        ProjectService.getProjects(new OnSuccessListener<List<Project>>() {
+            @Override
+            public void onSuccess(List<Project> pro) {
+                projects.clear();
+                projects.addAll(pro);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         return root;
     }
 }
