@@ -1,5 +1,6 @@
 package ikpmd.ikpmd.testapplication.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ikpmd.ikpmd.testapplication.ProjectActivity;
 import ikpmd.ikpmd.testapplication.R;
 import ikpmd.ikpmd.testapplication.models.Project;
 import ikpmd.ikpmd.testapplication.services.ProjectService;
@@ -54,6 +56,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
+                final Intent intent = new Intent(getContext(), ProjectActivity.class);
+                intent.putExtra("projectId", projects.get(position).getId());
+                startActivity(intent);
             }
         });
 

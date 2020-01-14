@@ -12,14 +12,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ikpmd.ikpmd.testapplication.models.Project;
+import ikpmd.ikpmd.testapplication.models.Test;
 
 public class ProjectService extends FirebaseService {
 
     private static String TAG = "PROJECT_SERVICE";
+
+
 
     public static void getProjects(final OnSuccessListener<List<Project>> sl){
 
@@ -43,6 +47,65 @@ public class ProjectService extends FirebaseService {
             public void onFailure(@NonNull Exception e){
                 Log.d(TAG,"Could not load projects");
                 sl.onSuccess(new ArrayList<Project>());
+            }
+        });
+    }
+
+
+    private static void getTests(String projectId, final OnSuccessListener<List<Test>> sl){
+        Log.d(TAG, "Attempting to log testst");
+        db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            List<Test> testList = new ArrayList<>();
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG, "COMPLETED getting testts");
+                if(task.isSuccessful()){
+                    Log.d(TAG, "Getting tests success, listSize: " + task.getResult().size());
+                    for(QueryDocumentSnapshot snapshot: task.getResult()){
+                        testList.add(snapshot.toObject(Test.class));
+                    }
+                }else{
+                    Log.d(TAG, "Could not load tests");
+                }
+
+                sl.onSuccess(testList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d(TAG, "SUCCES");
+            }
+        });
+    }
+
+
+    public  static void getProject(String projectId, final OnSuccessListener<Project> sl, final OnFailureListener fl){
+        final Project[] project = new Project[1];
+        getDocument("projects", projectId, new OnSuccessListener<DocumentSnapshot>() {
+
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                project[0] = documentSnapshot.toObject(Project.class);
+                project[0].setId(documentSnapshot.getId());
+                getTests(project[0].getId(), new OnSuccessListener<List<Test>>() {
+                    @Override
+                    public void onSuccess(List<Test> tests) {
+
+                        project[0].setTests(tests);
+                        sl.onSuccess(project[0]);
+                    }
+                });
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                fl.onFailure(new Exception("Something went wrong"));
             }
         });
     }

@@ -1,7 +1,11 @@
 package ikpmd.ikpmd.testapplication.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Project {

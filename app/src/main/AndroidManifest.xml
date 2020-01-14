@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".utils.ProjectActivity"></activity>
+        <activity android:name=".ProjectActivity"></activity>
         <activity android:name=".TestRoundResultActivity" />
         <activity android:name=".TestStepActivity" />
         <activity android:name=".TestStartActivity" />
