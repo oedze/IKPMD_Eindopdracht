@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class FirebaseService {
 
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public static void login(String email, String password, OnSuccessListener successListener, OnFailureListener failureListener) {

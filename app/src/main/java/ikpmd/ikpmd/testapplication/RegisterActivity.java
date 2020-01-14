@@ -62,8 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             }, new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    email.setText("");
+                                public void onFailure(@NonNull Exception e) { email.setText("");
                                     password.setText("");
                                     confirmPassword.setText("");
                                     Toast toast = Toast.makeText(getApplicationContext(), "Dit email address is al in gebruik", Toast.LENGTH_LONG);

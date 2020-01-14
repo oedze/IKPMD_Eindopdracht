@@ -21,6 +21,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import ikpmd.ikpmd.testapplication.models.Project;
+import ikpmd.ikpmd.testapplication.services.ProjectService;
+
 public class DashhboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -51,6 +54,7 @@ public class DashhboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        ProjectService.getProjects();
     }
 
     @Override
