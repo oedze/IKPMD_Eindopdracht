@@ -60,6 +60,8 @@ public class TestPreConditionAdapter extends RecyclerView.Adapter<TestPreConditi
             myTextView.addTextChangedListener(this);
             closeButton.setOnClickListener(this);
 
+
+
         }
 
 
