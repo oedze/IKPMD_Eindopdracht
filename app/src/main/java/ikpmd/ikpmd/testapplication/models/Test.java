@@ -2,6 +2,8 @@ package ikpmd.ikpmd.testapplication.models;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 public class Test {
 
     public String id;
@@ -11,12 +13,12 @@ public class Test {
     public String name;
     public String reviewer;
     public String version;
-    public String[] prerequisites;
-    public String[] data;
+    public List<String> prerequisites;
+    public List<String> data;
 
     public Test() {}
 
-    public Test(String id, String project, String author, String description, String reviewer, String version, String[] prerequisites, String[] data) {
+    public Test(String id, String project, String author, String description, String reviewer, String version, List<String> prerequisites, List<String> data) {
         this.id = id;
         this.project = project;
         this.author = author;
@@ -89,19 +91,19 @@ public class Test {
         this.version = version;
     }
 
-    public String[] getPrerequisites() {
+    public List<String> getPrerequisites() {
         return prerequisites;
     }
 
-    public void setPrerequisites(String[] prerequisites) {
+    public void setPrerequisites(List<String> prerequisites) {
         this.prerequisites = prerequisites;
     }
 
-    public String[] getData() {
+    public List<String> getData() {
         return data;
     }
 
-    public void setData(String[] data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
 }

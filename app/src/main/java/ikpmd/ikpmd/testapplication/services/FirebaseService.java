@@ -58,7 +58,7 @@ public class FirebaseService {
                 .addOnFailureListener(failureListener);
     }
 
-    public static void addDocument(String collection, HashMap<String,Object> document, OnSuccessListener successListener, OnFailureListener failureListener) {
+    public static void addDocument(String collection, Object document, OnSuccessListener successListener, OnFailureListener failureListener) {
 
         String path = "/users/"+getUser().getEmail()+"/"+collection;
 
