@@ -70,7 +70,9 @@ public class ProjectService extends FirebaseService {
                 if(task.isSuccessful()){
                     Log.d(TAG, "Getting tests success, listSize: " + task.getResult().size());
                     for(QueryDocumentSnapshot snapshot: task.getResult()){
-                        testList.add(snapshot.toObject(Test.class));
+                        Test test = snapshot.toObject(Test.class);
+                        test.setId(snapshot.getId());
+                        testList.add(test);
                     }
                 }else{
                     Log.d(TAG, "Could not load tests");
