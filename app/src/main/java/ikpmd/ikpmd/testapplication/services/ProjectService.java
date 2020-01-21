@@ -9,17 +9,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ikpmd.ikpmd.testapplication.models.Project;
+import ikpmd.ikpmd.testapplication.models.Step;
 import ikpmd.ikpmd.testapplication.models.Test;
+import ikpmd.ikpmd.testapplication.models.TestData;
 
 public class ProjectService extends FirebaseService {
 
@@ -112,16 +117,39 @@ public class ProjectService extends FirebaseService {
         });
     }
 
-    public static void addTestToProject(String projectId, Test test, final OnSuccessListener s1, final OnFailureListener fl) {
-        db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").add(test).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()){
-                    s1.onSuccess(true);
-                }else{
-                    fl.onFailure(new Exception("Something went wrong"));
-                }
-            }
-        });
+//    public static void addTestToProject(String projectId,final  Test test, final OnSuccessListener s1, final OnFailureListener fl) {
+//        db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").add(test).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentReference> task) {
+//                if(task.isSuccessful()){
+//                    task.getResult().collection("steps").add(test.getSteps());
+//                    task.getResult().collection("data").add(test.getData());
+//                    s1.onSuccess(true);
+//                }else{
+//                    fl.onFailure(new Exception("Something went wrong"));
+//                }
+//            }
+//        });
+//    }
+
+    public static void addTestToProject(String projectId, Test test, final OnSuccessListener s1, final OnFailureListener fl){
+        WriteBatch batch = db.batch();
+        DocumentReference docRef = db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").document();
+        batch.set(docRef, test);
+
+        CollectionReference colRef = docRef.collection("steps");
+        for(Step step: test.getSteps()){
+            DocumentReference doc = colRef.document();
+            batch.set(doc, step);
+        }
+
+        CollectionReference colRef2 = docRef.collection("data");
+        for(TestData data: test.getData()){
+            DocumentReference doc = colRef2.document();
+            batch.set(doc, data);
+        }
+
+        batch.commit().addOnSuccessListener(s1).addOnFailureListener(fl);
+
     }
 }

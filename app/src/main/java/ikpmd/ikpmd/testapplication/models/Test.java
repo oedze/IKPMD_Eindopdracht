@@ -2,29 +2,31 @@ package ikpmd.ikpmd.testapplication.models;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.List;
 
 public class Test {
 
-    public String id;
-    public String author;
-    public String description;
-    public String name;
-    public String version;
-    public List<String> prerequisites;
-    public List<TestData> data;
-    public List<Step> steps;
+    private String id;
+    private String author;
+    private String description;
+    private String name;
+    private String version;
+    private List<String> prerequisites;
+    private List<TestData> data;
+    private List<Step> steps;
 
     public Test() {}
 
-    public Test(String id, String author, String description, String version, List<String> prerequisites, List<TestData> data) {
-        this.id = id;
-        this.author = author;
-        this.description = description;
-        this.version = version;
-        this.prerequisites = prerequisites;
-        this.data = data;
-    }
+
 
     @NonNull
     @Override
@@ -32,6 +34,25 @@ public class Test {
         return name;
     }
 
+
+    public List<String> getPrerequisites() {
+        return prerequisites;
+    }
+
+    public void setPrerequisites(List<String> prerequisites) {
+        this.prerequisites = prerequisites;
+    }
+
+    @Exclude
+    public List<TestData> getData() {
+        return data;
+    }
+
+    public void setData(List<TestData> data) {
+        this.data = data;
+    }
+
+    @Exclude
     public List<Step> getSteps() {
         return steps;
     }
@@ -80,19 +101,5 @@ public class Test {
         this.version = version;
     }
 
-    public List<String> getPrerequisites() {
-        return prerequisites;
-    }
 
-    public void setPrerequisites(List<String> prerequisites) {
-        this.prerequisites = prerequisites;
-    }
-
-    public List<TestData> getData() {
-        return data;
-    }
-
-    public void setData(List<TestData> data) {
-        this.data = data;
-    }
 }
