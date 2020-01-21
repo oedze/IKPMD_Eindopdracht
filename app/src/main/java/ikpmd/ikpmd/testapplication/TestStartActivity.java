@@ -1,52 +1,43 @@
 package ikpmd.ikpmd.testapplication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import ikpmd.ikpmd.testapplication.models.Project;
-import ikpmd.ikpmd.testapplication.models.Round;
 import ikpmd.ikpmd.testapplication.models.Test;
-import ikpmd.ikpmd.testapplication.services.FirebaseService;
+import ikpmd.ikpmd.testapplication.services.RoundService;
 
 public class TestStartActivity extends AppCompatActivity {
-
-    private Project project;
-    private Test test;
-    private Round round;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_start);
 
-        getTest("uasuLd4k2DgbLOdh3QKw", "test1");
-        // TODO haal project, test en round uit bundle
-    }
+        insertTestValues(RoundService.getCurrentTest());
 
-    private void getTest(String projectId, String testId) {
+        final Intent intent_gotoStep = new Intent(this, TestStepActivity.class);
 
-        FirebaseService.getDocument("projects/" + projectId + "/tests/", testId,
-                new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Test test = documentSnapshot.toObject(Test.class);
-                        insertTestValues(test);
-                    }
-                }, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+        Button button_start =  findViewById(R.id.button_teststart_start);
+        Button button_skip =  findViewById(R.id.button_teststart_skip);
 
-                    }
-                });
+        button_start.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(intent_gotoStep);
+            }
+        });
 
-
+        button_skip.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                skip();
+            }
+        });
     }
 
     private void insertTestValues(Test test) {
@@ -54,14 +45,12 @@ public class TestStartActivity extends AppCompatActivity {
         TextView textName = findViewById(R.id.text_teststart_name);
         TextView textVersion = findViewById(R.id.text_teststart_version);
         TextView textAuthor = findViewById(R.id.text_teststart_author);
-        TextView textReviewer = findViewById(R.id.text_teststart_reviewer);
         TextView textDescription = findViewById(R.id.text_teststart_description);
         TextView textPrerequisites = findViewById(R.id.text_teststart_prerequisites);
 
         textName.setText(test.getName());
-        textVersion.setText("Version "+test.getVersion());
-        textAuthor.setText("Written by "+test.getAuthor());
-        textReviewer.setText("Reviewed by "+test.getReviewer());
+        textVersion.setText("Versie "+test.getVersion());
+        textAuthor.setText("Geschreven door "+test.getAuthor());
         textDescription.setText(test.getDescription());
 
         String prerequisitesString = "";
@@ -70,6 +59,10 @@ public class TestStartActivity extends AppCompatActivity {
         }
 
         textPrerequisites.setText("Prerequisites:\n"+prerequisitesString);
+
+    }
+
+    private void skip() {
 
     }
 

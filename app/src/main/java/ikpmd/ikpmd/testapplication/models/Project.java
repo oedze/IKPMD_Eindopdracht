@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.List;
 
-public class Project {
+public class Project implements Serializable {
 
     public String id;
     public String name;

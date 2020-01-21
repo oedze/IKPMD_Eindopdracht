@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, CreateTestActivity.class);
         final Intent intent2 = new Intent(this, LoginActivity.class);
         final Intent intent3 = new Intent(this, RegisterActivity.class);
-        final Intent intent4 = new Intent(this, TestStartActivity.class);
+        final Intent intent4 = new Intent(this, StartTestRoundActivity.class);
         final Intent intent5 = new Intent(this, TestStepActivity.class);
 
 
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.button);
         Button gotoLogin = findViewById(R.id.button_main_gotologin);
         Button gotoRegister =  findViewById(R.id.button_main_gotoregister);
-        Button gotoTestStart =  findViewById(R.id.button_main_gototest);
+        Button gotoRound =  findViewById(R.id.button_main_gotoround);
         Button gotoTestStep =  findViewById(R.id.button_main_gotostep);
 
 
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        gotoTestStart.setOnClickListener(new View.OnClickListener(){
+        gotoRound.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {

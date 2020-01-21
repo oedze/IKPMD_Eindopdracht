@@ -15,11 +15,11 @@
         tools:layout_editor_absoluteY="178dp" />
 
     <Button
-        android:id="@+id/button_main_gototest"
+        android:id="@+id/button_main_gotoround"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="GA NAAR TEST"
+        android:text="GA NAAR RONDE"
         app:layout_constraintTop_toBottomOf="@+id/button_main_gotologin"
         tools:layout_editor_absoluteX="66dp" />
 

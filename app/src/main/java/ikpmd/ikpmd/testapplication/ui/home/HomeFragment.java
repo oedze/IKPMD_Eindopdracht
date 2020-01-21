@@ -27,7 +27,7 @@ import ikpmd.ikpmd.testapplication.R;
 import ikpmd.ikpmd.testapplication.models.Project;
 import ikpmd.ikpmd.testapplication.services.ProjectService;
 
-import static ikpmd.ikpmd.testapplication.R.layout.activity_project_list_view;
+//import static ikpmd.ikpmd.testapplication.R.layout.activity_project_list_view;
 
 public class HomeFragment extends Fragment {
 
@@ -36,41 +36,41 @@ public class HomeFragment extends Fragment {
     List<Project> projects = new ArrayList<>();
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-
-        Project pj = new Project();
-        pj.setName("Test");
-        projects.add(pj);
-
-
-        final ArrayAdapter adapter = new ArrayAdapter<Project>(root.getContext(), activity_project_list_view, projects);
-
-        ListView listView = root.findViewById(R.id.project_list);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
-                final Intent intent = new Intent(getContext(), ProjectActivity.class);
-                intent.putExtra("projectId", projects.get(position).getId());
-                startActivity(intent);
-            }
-        });
-
-        ProjectService.getProjects(new OnSuccessListener<List<Project>>() {
-            @Override
-            public void onSuccess(List<Project> pro) {
-                projects.clear();
-                projects.addAll(pro);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        return root;
-    }
+//    public View onCreateView(@NonNull LayoutInflater inflater,
+//                             ViewGroup container, Bundle savedInstanceState) {
+//        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+//        View root = inflater.inflate(R.layout.fragment_home, container, false);
+//
+//
+//        Project pj = new Project();
+//        pj.setName("Test");
+//        projects.add(pj);
+//
+//
+//        final ArrayAdapter adapter = new ArrayAdapter<Project>(root.getContext(), activity_project_list_view, projects);
+//
+//        ListView listView = root.findViewById(R.id.project_list);
+//        listView.setAdapter(adapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
+//                final Intent intent = new Intent(getContext(), ProjectActivity.class);
+//                intent.putExtra("projectId", projects.get(position).getId());
+//                startActivity(intent);
+//            }
+//        });
+//
+//        ProjectService.getProjects(new OnSuccessListener<List<Project>>() {
+//            @Override
+//            public void onSuccess(List<Project> pro) {
+//                projects.clear();
+//                projects.addAll(pro);
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
+//
+//        return root;
+//    }
 }

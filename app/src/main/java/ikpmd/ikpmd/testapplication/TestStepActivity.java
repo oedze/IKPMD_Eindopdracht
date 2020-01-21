@@ -3,6 +3,7 @@ package ikpmd.ikpmd.testapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,27 +28,31 @@ import ikpmd.ikpmd.testapplication.models.Round;
 import ikpmd.ikpmd.testapplication.models.Step;
 import ikpmd.ikpmd.testapplication.models.StepResult;
 import ikpmd.ikpmd.testapplication.models.Test;
+import ikpmd.ikpmd.testapplication.models.TestData;
 import ikpmd.ikpmd.testapplication.models.TestResult;
 import ikpmd.ikpmd.testapplication.services.FirebaseService;
+import ikpmd.ikpmd.testapplication.services.RoundService;
 
 public class TestStepActivity extends AppCompatActivity {
 
-    Project project;
-    Test test;
-    Round round;
     List<Step> steps = new ArrayList();
+    List<TestData> testDataList = new ArrayList();
     List<StepResult> stepResults = new ArrayList();
     int currentStepIndex = -1;
+
+    boolean stepsReceived = false;
+    boolean testDataReceived = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_step);
 
-        //TODO get project and test from bundle
-//        getSteps(project.getId(), test.getId());
+        getSteps(RoundService.project.getId(), RoundService.getCurrentTest().getId());
+        getTestData(RoundService.project.getId(), RoundService.getCurrentTest().getId());
 
-        getSteps("uasuLd4k2DgbLOdh3QKw","test1");
+//        getSteps("uasuLd4k2DgbLOdh3QKw","test1");
+//        getTestData("uasuLd4k2DgbLOdh3QKw","test1");
 
         final RadioButton radioStepPassed = findViewById(R.id.radio_step_passed);
         final RadioButton radioStepFailed = findViewById(R.id.radio_step_failed);
@@ -112,7 +117,8 @@ public class TestStepActivity extends AppCompatActivity {
                         });
 
                         // Load first step
-                        nextStep();
+                        stepsReceived = true;
+                        if (testDataReceived) nextStep();
 
                     }
                 }, new OnFailureListener() {
@@ -124,6 +130,70 @@ public class TestStepActivity extends AppCompatActivity {
 
     }
 
+    private void getTestData(String projectId, String testId) {
+
+        FirebaseService.getCollection("projects/" + projectId + "/tests/" +testId + "/data",
+                new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                            TestData testData = document.toObject(TestData.class);
+                            testDataList.add(testData);
+                        }
+
+                        // Load first step
+                        testDataReceived = true;
+                        if (stepsReceived) nextStep();
+
+                    }
+                }, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+    }
+
+    private void insertStepValues(Step step) {
+
+        ProgressBar progressStep = findViewById(R.id.progress_step);
+        TextView textStepNumber = findViewById(R.id.text_step_number);
+        TextView textStepDetails = findViewById(R.id.text_step_detail);
+        TextView textStepExpectedResult = findViewById(R.id.text_step_expectedresult);
+        RadioButton radioStepPassed = findViewById(R.id.radio_step_passed);
+        RadioButton radioStepFailed = findViewById(R.id.radio_step_failed);
+        TextView textStepActualResultLabel = findViewById(R.id.text_step_actualresult_label);
+        EditText editTextStepActualResult = findViewById(R.id.edittext_step_actualresult);
+        Button buttonStepNext = findViewById(R.id.button_step_next);
+
+        progressStep.setMax(steps.size());
+        progressStep.setProgress(currentStepIndex);
+        textStepNumber.setText("Stap #"+step.getNumber());
+        textStepDetails.setText(insertTestData(step));
+        textStepExpectedResult.setText(step.getExpectedResult());
+        radioStepPassed.setChecked(false);
+        radioStepFailed.setChecked(false);
+        textStepActualResultLabel.setVisibility(View.INVISIBLE);
+        editTextStepActualResult.setVisibility(View.INVISIBLE);
+        editTextStepActualResult.setText("");
+        buttonStepNext.setEnabled(false);
+
+    }
+
+    private String insertTestData(Step step) {
+
+        String out = step.getDetails();
+
+        for (TestData testData : testDataList) {
+            out = out.replace("#"+testData.getKey(), testData.getValue());
+        }
+
+        return out;
+
+    }
+
     private void nextStep() {
 
         if (currentStepIndex >= 0) addStepResult();
@@ -131,7 +201,7 @@ public class TestStepActivity extends AppCompatActivity {
         currentStepIndex++;
 
         if (currentStepIndex >= steps.size()) {
-            complete();
+            completeTest();
             return;
         }
 
@@ -153,57 +223,26 @@ public class TestStepActivity extends AppCompatActivity {
 
     }
 
-    private void insertStepValues(Step step) {
+    private void completeTest() {
 
-        ProgressBar progressStep = findViewById(R.id.progress_step);
-        TextView textStepNumber = findViewById(R.id.text_step_number);
-        TextView textStepDetails = findViewById(R.id.text_step_detail);
-        TextView textStepExpectedResult = findViewById(R.id.text_step_expectedresult);
-        RadioButton radioStepPassed = findViewById(R.id.radio_step_passed);
-        RadioButton radioStepFailed = findViewById(R.id.radio_step_failed);
-        TextView textStepActualResultLabel = findViewById(R.id.text_step_actualresult_label);
-        EditText editTextStepActualResult = findViewById(R.id.edittext_step_actualresult);
-        Button buttonStepNext = findViewById(R.id.button_step_next);
-
-        progressStep.setMax(steps.size());
-        progressStep.setProgress(currentStepIndex);
-        textStepNumber.setText("Step #"+step.getNumber());
-        textStepDetails.setText(step.getDetails());
-        textStepExpectedResult.setText(step.getExpectedResult());
-        radioStepPassed.setChecked(false);
-        radioStepFailed.setChecked(false);
-        textStepActualResultLabel.setVisibility(View.INVISIBLE);
-        editTextStepActualResult.setVisibility(View.INVISIBLE);
-        editTextStepActualResult.setText("");
-        buttonStepNext.setEnabled(false);
-
-    }
-
-    private void complete() {
-
-        if (true) return;
-
+        //TODO results
         TestResult testResult = new TestResult();
-        // TODO set date and tester
 
-        // Add all stepResults to testResult
-        for (StepResult stepResult : stepResults) {
+        RoundService.currentTestIndex++;
 
-            FirebaseService.addDocument("projects/" + project.getId() + "/rounds/" + round.getId() + "/testresults/" + testResult.getId() + "/steps", stepResult,
-                    new OnSuccessListener() {
-                        @Override
-                        public void onSuccess(Object o) {
+        if (RoundService.currentTestIndex < RoundService.tests.size()) {
 
-                        }
-                    }, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+            // Next test
+            final Intent intent_gotoTestStart = new Intent(this, TestStartActivity.class);
+            startActivity(intent_gotoTestStart);
 
-                        }
-                    });
+        } else {
+
+            // TODO Complete round
+
         }
 
-    }
 
+    }
 
 }
