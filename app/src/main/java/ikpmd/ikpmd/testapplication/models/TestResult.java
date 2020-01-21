@@ -1,10 +1,16 @@
 package ikpmd.ikpmd.testapplication.models;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.util.List;
+
 public class TestResult {
 
     public String id;
     public String tester;
     public String date;
+    @Exclude
+    public List<StepResult> stepResults;
 
     public TestResult() {}
 

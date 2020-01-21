@@ -40,10 +40,12 @@ public class StartTestRoundActivity extends AppCompatActivity {
         project = new Project("uasuLd4k2DgbLOdh3QKw","IPSEN3","ipsen3 project");
         RoundService.project = project;
         RoundService.currentTestIndex = 0;
+        RoundService.testResults = new ArrayList();
 
         final Intent intent_gotoTestStart = new Intent(this, TestStartActivity.class);
 
-        Button gotoTestStart =  findViewById(R.id.button_startround_start);
+        final Button gotoTestStart =  findViewById(R.id.button_startround_start);
+        gotoTestStart.setEnabled(false);
 
         gotoTestStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +72,8 @@ public class StartTestRoundActivity extends AppCompatActivity {
                         return o1.getName().compareTo(o2.getName());
                     }
                 });
+
+                gotoTestStart.setEnabled(true);
             }
         }, new OnFailureListener() {
             @Override

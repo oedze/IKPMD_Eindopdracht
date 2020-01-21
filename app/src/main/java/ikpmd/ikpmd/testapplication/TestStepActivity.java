@@ -18,9 +18,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import ikpmd.ikpmd.testapplication.models.Project;
@@ -37,7 +41,6 @@ public class TestStepActivity extends AppCompatActivity {
 
     List<Step> steps = new ArrayList();
     List<TestData> testDataList = new ArrayList();
-    List<StepResult> stepResults = new ArrayList();
     int currentStepIndex = -1;
 
     boolean stepsReceived = false;
@@ -200,6 +203,16 @@ public class TestStepActivity extends AppCompatActivity {
 
         currentStepIndex++;
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        TestResult testResult = new TestResult();
+        testResult.setTester(FirebaseService.getUser().getDisplayName());
+        testResult.setDate(formatter.format(new Date()));
+        testResult.stepResults = new ArrayList();
+
+        RoundService.testResults.add(testResult);
+
         if (currentStepIndex >= steps.size()) {
             completeTest();
             return;
@@ -219,14 +232,11 @@ public class TestStepActivity extends AppCompatActivity {
         stepResult.setActualResult( radioStepPassed.isChecked() ? steps.get(currentStepIndex).getExpectedResult() : editTextStepActualResult.getText().toString() );
         stepResult.setStepId( steps.get(currentStepIndex).getId() );
 
-        stepResults.add(stepResult);
+        RoundService.testResults.get(RoundService.currentTestIndex).stepResults.add(stepResult);
 
     }
 
     private void completeTest() {
-
-        //TODO results
-        TestResult testResult = new TestResult();
 
         RoundService.currentTestIndex++;
 
@@ -238,7 +248,9 @@ public class TestStepActivity extends AppCompatActivity {
 
         } else {
 
-            // TODO Complete round
+            // Round result
+            final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
+            startActivity(intent_gotoRoundResult);
 
         }
 

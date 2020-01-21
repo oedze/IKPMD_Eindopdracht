@@ -58,7 +58,7 @@ public class TestStartActivity extends AppCompatActivity {
             prerequisitesString += " - " + prerequisite + "\n";
         }
 
-        textPrerequisites.setText("Prerequisites:\n"+prerequisitesString);
+        textPrerequisites.setText("Startvoorwaardes:\n"+prerequisitesString);
 
     }
 
