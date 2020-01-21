@@ -37,22 +37,11 @@ public class ProjectActivity extends AppCompatActivity{
     List<Test> testList = new ArrayList<Test>();
     Button createTestButton;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    ArrayAdapter adapter;
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project);
-
-
-        projectName = (TextView)findViewById(R.id.text_project_name);
-        projectDescription = (TextView)findViewById(R.id.text_project_description);
-        testListView = (ListView)findViewById(R.id.list_project_tests);
-        createTestButton = (Button)findViewById(R.id.button_project_test_create);
-        createTestButton.setEnabled(false);
-
-        final ArrayAdapter adapter = new ArrayAdapter<Test>(getBaseContext(), activity_test_list, testList);
-        testListView.setAdapter(adapter);
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         Intent intent = getIntent();
         final String projectId = intent.getStringExtra("projectId");
@@ -74,6 +63,30 @@ public class ProjectActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_project);
+
+
+        projectName = (TextView)findViewById(R.id.text_project_name);
+        projectDescription = (TextView)findViewById(R.id.text_project_description);
+        testListView = (ListView)findViewById(R.id.list_project_tests);
+        createTestButton = (Button)findViewById(R.id.button_project_test_create);
+        createTestButton.setEnabled(false);
+
+         adapter = new ArrayAdapter<Test>(getBaseContext(), activity_test_list, testList);
+        testListView.setAdapter(adapter);
+
+        onResume();
+
+
+
+
+        Intent intent = getIntent();
+        final String projectId = intent.getStringExtra("projectId");
 
         final Intent gotoCreateTest = new Intent(this, CreateTestActivity.class);
 
