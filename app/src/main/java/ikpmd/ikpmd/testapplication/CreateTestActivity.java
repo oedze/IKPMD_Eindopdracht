@@ -183,6 +183,12 @@ public class CreateTestActivity extends AppCompatActivity implements TestPreCond
                     test.setVersion(testVersion.getText().toString());
                     test.setPrerequisites(preConditionList);
                     test.setData(testDataList);
+
+                    int x = 0;
+                    for(Step step : testStepList){
+                        step.setNumber(++x);
+                    }
+
                     test.setSteps(testStepList);
 
                     Intent intent = getIntent();
@@ -192,6 +198,7 @@ public class CreateTestActivity extends AppCompatActivity implements TestPreCond
                         @Override
                         public void onSuccess(Object o) {
                             showError("Gelukt met toeveogen!");
+                            finish();
                         }
                     }, new OnFailureListener() {
                         @Override

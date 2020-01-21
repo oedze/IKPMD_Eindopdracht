@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class Project implements Serializable {
         return name;
     }
 
+    @Exclude
     public List<Test> getTests() {
         return tests;
     }
@@ -39,6 +42,7 @@ public class Project implements Serializable {
         this.tests = tests;
     }
 
+    @Exclude
     public String getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package ikpmd.ikpmd.testapplication.services;
 
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,7 +70,9 @@ public class ProjectService extends FirebaseService {
                 if(task.isSuccessful()){
                     Log.d(TAG, "Getting tests success, listSize: " + task.getResult().size());
                     for(QueryDocumentSnapshot snapshot: task.getResult()){
-                        testList.add(snapshot.toObject(Test.class));
+                        Test test = snapshot.toObject(Test.class);
+                        test.setId(snapshot.getId());
+                        testList.add(test);
                     }
                 }else{
                     Log.d(TAG, "Could not load tests");
@@ -117,20 +120,7 @@ public class ProjectService extends FirebaseService {
         });
     }
 
-//    public static void addTestToProject(String projectId,final  Test test, final OnSuccessListener s1, final OnFailureListener fl) {
-//        db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").add(test).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentReference> task) {
-//                if(task.isSuccessful()){
-//                    task.getResult().collection("steps").add(test.getSteps());
-//                    task.getResult().collection("data").add(test.getData());
-//                    s1.onSuccess(true);
-//                }else{
-//                    fl.onFailure(new Exception("Something went wrong"));
-//                }
-//            }
-//        });
-//    }
+
 
     public static void addTestToProject(String projectId, Test test, final OnSuccessListener s1, final OnFailureListener fl){
         WriteBatch batch = db.batch();
@@ -151,5 +141,13 @@ public class ProjectService extends FirebaseService {
 
         batch.commit().addOnSuccessListener(s1).addOnFailureListener(fl);
 
+    }
+
+
+
+    public static void createProject(Project project, final OnSuccessListener sl, final OnFailureListener fl){
+        db.collection("users").document(getUser().getEmail()).collection("projects").add(project)
+                .addOnSuccessListener(sl)
+                .addOnFailureListener(fl);
     }
 }

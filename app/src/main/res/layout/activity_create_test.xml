@@ -114,7 +114,7 @@
             android:layout_below="@id/rv_create_test_data"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/vertical_spacing"
-            android:text="Voeg testData toe" />
+            android:text="Voeg test stap toe" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_create_test_step"
