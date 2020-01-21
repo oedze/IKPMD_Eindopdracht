@@ -43,7 +43,6 @@ public class HomeFragment extends Fragment {
 
 
         Project pj = new Project();
-        pj.setName("Test");
         projects.add(pj);
 
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class ProjectActivity extends AppCompatActivity{
     TextView projectName;
     ListView testListView;
     List<Test> testList = new ArrayList<Test>();
+    Button createTestButton;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,20 +46,23 @@ public class ProjectActivity extends AppCompatActivity{
         projectName = (TextView)findViewById(R.id.text_project_name);
         projectDescription = (TextView)findViewById(R.id.text_project_description);
         testListView = (ListView)findViewById(R.id.list_project_tests);
+        createTestButton = (Button)findViewById(R.id.button_project_test_create);
+        createTestButton.setEnabled(false);
 
         final ArrayAdapter adapter = new ArrayAdapter<Test>(getBaseContext(), activity_test_list, testList);
         testListView.setAdapter(adapter);
 
 
+
         Intent intent = getIntent();
-        String projectId = intent.getStringExtra("projectId");
+        final String projectId = intent.getStringExtra("projectId");
 
         ProjectService.getProject(projectId, new OnSuccessListener<Project>() {
             @Override
             public void onSuccess(Project project) {
                 projectName.setText(project.getName());
                 projectDescription.setText(project.getDescription());
-
+                createTestButton.setEnabled(true);
                 testList.clear();
                 testList.addAll(project.getTests());
                 adapter.notifyDataSetChanged();
@@ -68,6 +73,19 @@ public class ProjectActivity extends AppCompatActivity{
 
             }
         });
+
+
+        final Intent gotoCreateTest = new Intent(this, CreateTestActivity.class);
+
+        createTestButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                gotoCreateTest.putExtra("projectId", projectId);
+                startActivity(gotoCreateTest);
+
+            }
+        });
+
 
     }
 }

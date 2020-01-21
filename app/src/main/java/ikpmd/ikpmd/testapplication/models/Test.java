@@ -2,26 +2,25 @@ package ikpmd.ikpmd.testapplication.models;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 public class Test {
 
     public String id;
-    public String project;
     public String author;
     public String description;
     public String name;
-    public String reviewer;
     public String version;
-    public String[] prerequisites;
-    public String[] data;
+    public List<String> prerequisites;
+    public List<TestData> data;
+    public List<Step> steps;
 
     public Test() {}
 
-    public Test(String id, String project, String author, String description, String reviewer, String version, String[] prerequisites, String[] data) {
+    public Test(String id, String author, String description, String version, List<String> prerequisites, List<TestData> data) {
         this.id = id;
-        this.project = project;
         this.author = author;
         this.description = description;
-        this.reviewer = reviewer;
         this.version = version;
         this.prerequisites = prerequisites;
         this.data = data;
@@ -31,6 +30,14 @@ public class Test {
     @Override
     public String toString() {
         return name;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
     }
 
     public String getName() {
@@ -49,14 +56,6 @@ public class Test {
         this.id = id;
     }
 
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -73,14 +72,6 @@ public class Test {
         this.description = description;
     }
 
-    public String getReviewer() {
-        return reviewer;
-    }
-
-    public void setReviewer(String reviewer) {
-        this.reviewer = reviewer;
-    }
-
     public String getVersion() {
         return version;
     }
@@ -89,19 +80,19 @@ public class Test {
         this.version = version;
     }
 
-    public String[] getPrerequisites() {
+    public List<String> getPrerequisites() {
         return prerequisites;
     }
 
-    public void setPrerequisites(String[] prerequisites) {
+    public void setPrerequisites(List<String> prerequisites) {
         this.prerequisites = prerequisites;
     }
 
-    public String[] getData() {
+    public List<TestData> getData() {
         return data;
     }
 
-    public void setData(String[] data) {
+    public void setData(List<TestData> data) {
         this.data = data;
     }
 }

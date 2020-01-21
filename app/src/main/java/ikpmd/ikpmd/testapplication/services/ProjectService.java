@@ -1,6 +1,7 @@
 package ikpmd.ikpmd.testapplication.services;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -8,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -106,6 +108,19 @@ public class ProjectService extends FirebaseService {
             @Override
             public void onFailure(@NonNull Exception e) {
                 fl.onFailure(new Exception("Something went wrong"));
+            }
+        });
+    }
+
+    public static void addTestToProject(String projectId, Test test, final OnSuccessListener s1, final OnFailureListener fl) {
+        db.collection("users").document(getUser().getEmail()).collection("projects").document(projectId).collection("tests").add(test).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
+                    s1.onSuccess(true);
+                }else{
+                    fl.onFailure(new Exception("Something went wrong"));
+                }
             }
         });
     }
