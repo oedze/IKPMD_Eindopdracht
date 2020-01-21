@@ -123,5 +123,14 @@
             android:layout_below="@id/button_create_test_add_step"
             android:layout_marginTop="@dimen/vertical_spacing"
             ></androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/button_create_test_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/vertical_spacing"
+            android:layout_below="@id/rv_create_test_step"
+            android:text="Voeg test toe aan project" />
     </RelativeLayout>
 </ScrollView>
