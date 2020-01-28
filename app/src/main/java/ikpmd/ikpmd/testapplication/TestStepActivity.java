@@ -11,10 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -45,6 +47,9 @@ public class TestStepActivity extends AppCompatActivity {
 
     boolean stepsReceived = false;
     boolean testDataReceived = false;
+
+    private int stepResultSaveCounter;
+    private int stepResultAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +113,7 @@ public class TestStepActivity extends AppCompatActivity {
 
                         for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                             Step step = document.toObject(Step.class);
+                            step.setId(document.getId());
                             steps.add(step);
                         }
 
@@ -165,8 +171,7 @@ public class TestStepActivity extends AppCompatActivity {
         TextView textStepNumber = findViewById(R.id.text_step_number);
         TextView textStepDetails = findViewById(R.id.text_step_detail);
         TextView textStepExpectedResult = findViewById(R.id.text_step_expectedresult);
-        RadioButton radioStepPassed = findViewById(R.id.radio_step_passed);
-        RadioButton radioStepFailed = findViewById(R.id.radio_step_failed);
+        RadioGroup radioGroupStepPassed = findViewById(R.id.radiogroup_step_passed);
         TextView textStepActualResultLabel = findViewById(R.id.text_step_actualresult_label);
         EditText editTextStepActualResult = findViewById(R.id.edittext_step_actualresult);
         Button buttonStepNext = findViewById(R.id.button_step_next);
@@ -176,8 +181,7 @@ public class TestStepActivity extends AppCompatActivity {
         textStepNumber.setText("Stap #"+step.getNumber());
         textStepDetails.setText(insertTestData(step));
         textStepExpectedResult.setText(step.getExpectedResult());
-        radioStepPassed.setChecked(false);
-        radioStepFailed.setChecked(false);
+        radioGroupStepPassed.clearCheck();;
         textStepActualResultLabel.setVisibility(View.INVISIBLE);
         editTextStepActualResult.setVisibility(View.INVISIBLE);
         editTextStepActualResult.setText("");
@@ -199,22 +203,32 @@ public class TestStepActivity extends AppCompatActivity {
 
     private void nextStep() {
 
-        if (currentStepIndex >= 0) addStepResult();
+        if (currentStepIndex == -1) {
+
+            // First step
+            TestResult testResult = new TestResult();
+            testResult.setStepResults(new ArrayList());
+            testResult.setTestId(RoundService.getCurrentTest().getId());
+
+            RoundService.testResults.add(testResult);
+
+        } else {
+
+            addStepResult();
+
+            RadioButton radioStepFailed= findViewById(R.id.radio_step_failed);
+            if (radioStepFailed.isChecked()) {
+                completeTest("Failed");
+                return;
+            }
+
+
+        }
 
         currentStepIndex++;
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-
-        TestResult testResult = new TestResult();
-        testResult.setTester(FirebaseService.getUser().getDisplayName());
-        testResult.setDate(formatter.format(new Date()));
-        testResult.stepResults = new ArrayList();
-
-        RoundService.testResults.add(testResult);
-
         if (currentStepIndex >= steps.size()) {
-            completeTest();
+            completeTest("Passed");
             return;
         }
 
@@ -232,11 +246,14 @@ public class TestStepActivity extends AppCompatActivity {
         stepResult.setActualResult( radioStepPassed.isChecked() ? steps.get(currentStepIndex).getExpectedResult() : editTextStepActualResult.getText().toString() );
         stepResult.setStepId( steps.get(currentStepIndex).getId() );
 
-        RoundService.testResults.get(RoundService.currentTestIndex).stepResults.add(stepResult);
+        RoundService.testResults.get(RoundService.currentTestIndex).getStepResults().add(stepResult);
 
     }
 
-    private void completeTest() {
+    private void completeTest(String passed) {
+
+        // Test passed?
+        RoundService.testResults.get(RoundService.currentTestIndex).setPassed(passed);
 
         RoundService.currentTestIndex++;
 
@@ -248,12 +265,109 @@ public class TestStepActivity extends AppCompatActivity {
 
         } else {
 
-            // Round result
-            final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
-            startActivity(intent_gotoRoundResult);
+            System.out.println("Save round epic!");
+            saveRoundResult();
 
         }
 
+
+    }
+
+    private void saveRoundResult() {
+
+        // add round
+            // on success
+                // for testresult in testresult
+                    // save testresult
+
+        Round round = new Round();
+        round.setTester(FirebaseService.getUser().getDisplayName());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        round.setDate(formatter.format(new Date()));
+
+        stepResultSaveCounter = 0;
+        stepResultSaveCounter = 0;
+
+        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds", round, new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+
+                String roundId = documentReference.getId();
+
+                for (TestResult testResult : RoundService.testResults) {
+                    saveTestResult(roundId, testResult);
+                }
+
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    private void saveTestResult(final String roundId, final TestResult testResult) {
+
+        // add test
+            // on success
+                // for step in step
+
+        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds/"+roundId+"/testresults", testResult, new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+
+                String testResultId = documentReference.getId();
+
+                for (StepResult stepResult : testResult.getStepResults()) {
+                    stepResultAmount++;
+                    saveStepResult(roundId, testResultId, stepResult);
+                }
+
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+    }
+
+    private void saveStepResult(String roundId, String testResultId, StepResult stepResult) {
+
+        // add step
+            // on success
+                // stepResultSaveCounter++
+                // if stepResultSaveCounter >= stepResultAmount
+                    // saveComplete
+
+        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds/"+roundId+"/testresults/"+testResultId+"/stepresults", stepResult, new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+
+                stepResultSaveCounter++;
+                if (stepResultSaveCounter >= stepResultAmount) {
+                    saveComplete();
+                }
+
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    private void saveComplete() {
+
+        // Round result
+        final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
+        startActivity(intent_gotoRoundResult);
 
     }
 

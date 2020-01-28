@@ -12,10 +12,10 @@ import java.util.List;
 
 public class Project implements Serializable {
 
-    public String id;
-    public String name;
-    public String description;
-    public List<Test> tests;
+    private String id;
+    private String name;
+    private String description;
+    private List<Test> tests;
 
     public Project() {}
 

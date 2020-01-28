@@ -2,10 +2,10 @@ package ikpmd.ikpmd.testapplication.models;
 
 public class Step {
 
-    public String id;
-    public int number;
-    public String details;
-    public String expectedResult;
+    private String id;
+    private int number;
+    private String details;
+    private String expectedResult;
 
     public Step() {}
 
