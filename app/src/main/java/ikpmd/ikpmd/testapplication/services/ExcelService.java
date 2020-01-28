@@ -43,6 +43,8 @@ public class ExcelService {
             writer.append(',');
             writer.append("testname");
             writer.append(',');
+            writer.append("testresult");
+            writer.append(',');
             writer.append("stepname");
             writer.append(',');
             writer.append("stepresult");
@@ -51,10 +53,11 @@ public class ExcelService {
 
             for(TestResult rs : list){
                 writer.append(rs.getId() + ',');
-                writer.append("<testname>, , \n");
+                writer.append(rs.getTestId() +", " + rs.getPassed()+ ", , \n");
                 for(StepResult sr: rs.getStepResults()){
-                    writer.append(" , ,");
+                    writer.append(" , , ,");
                     writer.append("<stepname>," +  sr.getActualResult() +"\n");
+
                 }
             }
 
