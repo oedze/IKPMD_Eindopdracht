@@ -79,7 +79,7 @@ public class TestRoundResultActivity extends AppCompatActivity {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                RoundService.tests = new ArrayList();
+                RoundService.testResults = new ArrayList();
                 for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                     TestResult testResult = document.toObject(TestResult.class);
                     testResult.setId(document.getId());

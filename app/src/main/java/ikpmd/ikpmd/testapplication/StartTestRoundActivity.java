@@ -37,7 +37,6 @@ public class StartTestRoundActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_test_round);
 
-        // TODO get project and test from bundle
         RoundService.project = ProjectService.activeProject;
         RoundService.currentTestIndex = 0;
         RoundService.testResults = new ArrayList();

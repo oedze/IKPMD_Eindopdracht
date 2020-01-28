@@ -61,10 +61,10 @@ public class RoundService extends FirebaseService {
             @Override
             public void onSuccess(DocumentReference documentReference) {
 
-                String roundId = documentReference.getId();
+                activeRoundId = documentReference.getId();
 
                 for (TestResult testResult : testResults) {
-                    saveTestResult(roundId, testResult, onCompleteListener);
+                    saveTestResult(testResult, onCompleteListener);
                 }
 
             }
@@ -77,9 +77,9 @@ public class RoundService extends FirebaseService {
 
     }
 
-    private static void saveTestResult(final String roundId, final TestResult testResult, final OnCompleteListener onCompleteListener) {
+    private static void saveTestResult(final TestResult testResult, final OnCompleteListener onCompleteListener) {
 
-        FirebaseService.addDocument("projects/" + project.getId() + "/rounds/"+roundId+"/testresults", testResult, new OnSuccessListener<DocumentReference>() {
+        FirebaseService.addDocument("projects/" + project.getId() + "/rounds/"+activeRoundId+"/testresults", testResult, new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
 
@@ -89,7 +89,7 @@ public class RoundService extends FirebaseService {
 
                     for (StepResult stepResult : testResult.getStepResults()) {
                         stepResultAmount++;
-                        saveStepResult(roundId, testResultId, stepResult, onCompleteListener);
+                        saveStepResult(testResultId, stepResult, onCompleteListener);
                     }
 
                 } else {
@@ -107,10 +107,10 @@ public class RoundService extends FirebaseService {
 
     }
 
-    private static void saveStepResult(String roundId, String testResultId, StepResult stepResult, final OnCompleteListener onCompleteListener) {
+    private static void saveStepResult(String testResultId, StepResult stepResult, final OnCompleteListener onCompleteListener) {
 
 
-        FirebaseService.addDocument("projects/" + project.getId() + "/rounds/"+roundId+"/testresults/"+testResultId+"/stepresults", stepResult, new OnSuccessListener<DocumentReference>() {
+        FirebaseService.addDocument("projects/" + project.getId() + "/rounds/"+activeRoundId+"/testresults/"+testResultId+"/stepresults", stepResult, new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
 
