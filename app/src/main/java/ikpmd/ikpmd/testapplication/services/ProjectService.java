@@ -1,5 +1,6 @@
 package ikpmd.ikpmd.testapplication.services;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,7 +31,8 @@ import ikpmd.ikpmd.testapplication.models.TestData;
 public class ProjectService extends FirebaseService {
 
     private static String TAG = "PROJECT_SERVICE";
-
+    public static Project activeProject;
+    public static String activeProjecId;
 
 
     public static void getProjects(final OnSuccessListener<List<Project>> sl){
@@ -94,7 +96,7 @@ public class ProjectService extends FirebaseService {
     }
 
 
-    public  static void getProject(String projectId, final OnSuccessListener<Project> sl, final OnFailureListener fl){
+    public  static void getProject(final String projectId, final OnSuccessListener<Project> sl, final OnFailureListener fl){
         final Project[] project = new Project[1];
         getDocument("projects", projectId, new OnSuccessListener<DocumentSnapshot>() {
 
@@ -108,6 +110,8 @@ public class ProjectService extends FirebaseService {
                     public void onSuccess(List<Test> tests) {
 
                         project[0].setTests(tests);
+                        activeProjecId = projectId;
+                        activeProject = project[0];
                         sl.onSuccess(project[0]);
                     }
                 });

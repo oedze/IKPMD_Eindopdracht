@@ -38,6 +38,7 @@ public class ProjectActivity extends AppCompatActivity{
     List<Test> testList = new ArrayList<Test>();
     Button createTestButton;
     Button startTestButton;
+    Button viewResultsButton;
 
     ArrayAdapter adapter;
 
@@ -80,6 +81,8 @@ public class ProjectActivity extends AppCompatActivity{
         createTestButton = (Button)findViewById(R.id.button_project_test_create);
         createTestButton.setEnabled(false);
         startTestButton = findViewById(R.id.button_project_start_testing);
+        viewResultsButton  = (Button)findViewById(R.id.button_project_view_results);
+
 
          adapter = new ArrayAdapter<Test>(getBaseContext(), activity_test_list, testList);
         testListView.setAdapter(adapter);
@@ -94,6 +97,7 @@ public class ProjectActivity extends AppCompatActivity{
 
         final Intent gotoCreateTest = new Intent(this, CreateTestActivity.class);
         final Intent intent_gotoTestStart = new Intent(this, TestStartActivity.class);
+        final Intent inten_goto_results = new Intent(this, RoundListActivity.class);
 
         createTestButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -113,6 +117,15 @@ public class ProjectActivity extends AppCompatActivity{
                 RoundService.testResults = new ArrayList();
                 RoundService.tests = RoundService.project.getTests();
                 startActivity(intent_gotoTestStart);
+            }
+        });
+
+
+        viewResultsButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startActivity(inten_goto_results);
             }
         });
 
