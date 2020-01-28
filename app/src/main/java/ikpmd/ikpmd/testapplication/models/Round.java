@@ -1,5 +1,7 @@
 package ikpmd.ikpmd.testapplication.models;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.Exclude;
 
 public class Round {
@@ -15,6 +17,12 @@ public class Round {
         this.id = id;
         this.date = date;
         this.tester = tester;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TESt";
     }
 
     @Exclude

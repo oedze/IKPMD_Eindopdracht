@@ -44,12 +44,13 @@
     <ListView
         android:id="@+id/list_project_tests"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/vertical_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_project_test_create">
+        app:layout_constraintTop_toBottomOf="@+id/button_project_view_results">
 
     </ListView>
 
@@ -57,7 +58,7 @@
         android:id="@+id/button_project_test_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="@dimen/vertical_spacing"
         android:text="Nieuwe test maken"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,5 +74,15 @@
         app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toEndOf="@+id/button_project_test_create"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/button_project_view_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:text="Resultaten"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_project_test_create" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

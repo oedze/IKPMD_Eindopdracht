@@ -24,6 +24,7 @@ import ikpmd.ikpmd.testapplication.models.Round;
 import ikpmd.ikpmd.testapplication.models.Step;
 import ikpmd.ikpmd.testapplication.models.Test;
 import ikpmd.ikpmd.testapplication.services.FirebaseService;
+import ikpmd.ikpmd.testapplication.services.ProjectService;
 import ikpmd.ikpmd.testapplication.services.RoundService;
 
 public class StartTestRoundActivity extends AppCompatActivity {
@@ -37,8 +38,7 @@ public class StartTestRoundActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_test_round);
 
         // TODO get project and test from bundle
-        project = new Project("uasuLd4k2DgbLOdh3QKw","IPSEN3","ipsen3 project");
-        RoundService.project = project;
+        RoundService.project = ProjectService.activeProject;
         RoundService.currentTestIndex = 0;
         RoundService.testResults = new ArrayList();
 
