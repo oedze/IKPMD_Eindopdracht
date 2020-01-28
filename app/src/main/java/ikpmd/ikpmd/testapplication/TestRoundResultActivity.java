@@ -34,8 +34,8 @@ public class TestRoundResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_round_result);
 
-        loadTests(ProjectService.project.getId());
-        loadTestResults(ProjectService.project.getId(), RoundService.activeRoundId);
+        loadTests(ProjectService.activeProjecId);
+        loadTestResults(ProjectService.activeProjecId, RoundService.activeRoundId);
     }
 
     private void loadTests(String projectId) {
