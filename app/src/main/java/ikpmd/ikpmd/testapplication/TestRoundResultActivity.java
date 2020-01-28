@@ -3,14 +3,19 @@ package ikpmd.ikpmd.testapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -18,8 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ikpmd.ikpmd.testapplication.models.Project;
+import ikpmd.ikpmd.testapplication.models.Step;
+import ikpmd.ikpmd.testapplication.models.StepResult;
 import ikpmd.ikpmd.testapplication.models.Test;
 import ikpmd.ikpmd.testapplication.models.TestResult;
+import ikpmd.ikpmd.testapplication.services.ExcelService;
 import ikpmd.ikpmd.testapplication.services.FirebaseService;
 import ikpmd.ikpmd.testapplication.services.ProjectService;
 import ikpmd.ikpmd.testapplication.services.RoundService;
@@ -29,6 +38,9 @@ public class TestRoundResultActivity extends AppCompatActivity {
     private boolean testsReceived = false;
     private boolean testResultsReceived = false;
 
+    private static int stepResultLoadCounter;
+    private static int stepResultLoadAmount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +48,17 @@ public class TestRoundResultActivity extends AppCompatActivity {
 
         loadTests(ProjectService.activeProjecId);
         loadTestResults(ProjectService.activeProjecId, RoundService.activeRoundId);
+
+        Button buttonExport = findViewById(R.id.button_roundresult_export);
+        buttonExport.setEnabled(false);
+
+        buttonExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                export();
+            }
+        });
+
     }
 
     private void loadTests(String projectId) {
@@ -100,6 +123,43 @@ public class TestRoundResultActivity extends AppCompatActivity {
 
     }
 
+    private void loadStepResults(String projectId, String roundId, final OnCompleteListener onCompleteListener) {
+
+        stepResultLoadAmount = 0;
+        stepResultLoadCounter = 0;
+
+        for (final TestResult testResult : RoundService.testResults) {
+
+            stepResultLoadAmount++;
+
+            FirebaseService.getCollection("projects/" + projectId + "/rounds/" + roundId + "/testresults/" + testResult.getId() + "/stepresults", new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    testResult.setStepResults(new ArrayList());
+                    for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                        StepResult stepResult = document.toObject(StepResult.class);
+                        stepResult.setId(document.getId());
+                        testResult.getStepResults().add(stepResult);
+                    }
+
+                    stepResultLoadCounter++;
+                    if (stepResultLoadCounter >= stepResultLoadAmount)
+                        onCompleteListener.onComplete(null);
+
+
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }
+
+    }
+
     private void insertTestResultValues() {
 
         ProgressBar progressStep = findViewById(R.id.progress_roundresult);
@@ -110,6 +170,15 @@ public class TestRoundResultActivity extends AppCompatActivity {
         passedLabel.setText(countPassedTests()+"/"+RoundService.testResults.size()+"\nPassed");
 
         insertTests();
+
+        loadStepResults(ProjectService.activeProjecId, RoundService.activeRoundId, new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+
+                Button buttonExport = findViewById(R.id.button_roundresult_export);
+                buttonExport.setEnabled(true);
+            }
+        });
 
     }
 
@@ -155,6 +224,23 @@ public class TestRoundResultActivity extends AppCompatActivity {
                     break;
             }
         }
+
+    }
+
+    private void export() {
+
+        ExcelService.export(this, RoundService.activeRoundId+".csv", RoundService.testResults, new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.setType("text/csv");
+
+                Intent shareIntent =Intent.createChooser(intent, null);
+                startActivity(shareIntent);
+            }
+        });
 
     }
 

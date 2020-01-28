@@ -7,12 +7,12 @@
     tools:context=".TestRoundResultActivity">
 
     <Button
-        android:id="@+id/button_roundresult_save"
+        android:id="@+id/button_roundresult_export"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="31dp"
-        android:text="Opslaan"
+        android:text="Exporteren"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -64,7 +64,7 @@
         android:layout_width="408dp"
         android:layout_height="230dp"
         android:layout_marginTop="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_roundresult_save"
+        app:layout_constraintBottom_toTopOf="@+id/button_roundresult_export"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
