@@ -18,6 +18,4 @@ public class RoundService {
         return tests.get(currentTestIndex);
     }
 
-
-
 }

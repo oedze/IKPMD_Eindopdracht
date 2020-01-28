@@ -110,6 +110,7 @@ public class ProjectActivity extends AppCompatActivity{
             public void onClick(View v) {
                 RoundService.project = activityProject;
                 RoundService.currentTestIndex = 0;
+                RoundService.testResults = new ArrayList();
                 RoundService.tests = RoundService.project.getTests();
                 startActivity(intent_gotoTestStart);
             }
