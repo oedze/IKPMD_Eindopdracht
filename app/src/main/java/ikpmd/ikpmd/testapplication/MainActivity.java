@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         srList.add(new StepResult("0", "failed", "passed", "0"));
         srList.add(new StepResult("0", "failed", "passed", "0"));
         TestResult ts = new TestResult("text", "author", "tommorow");
-        ts.stepResults = srList;
+        ts.setStepResults(srList);
         list.add(ts);
         list.add(ts);
         list.add(ts);

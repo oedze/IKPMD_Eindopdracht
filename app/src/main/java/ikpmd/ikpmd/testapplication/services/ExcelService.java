@@ -13,17 +13,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import ikpmd.ikpmd.testapplication.models.StepResult;
 import ikpmd.ikpmd.testapplication.models.TestResult;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class ExcelService {
 
@@ -60,9 +52,9 @@ public class ExcelService {
             for(TestResult rs : list){
                 writer.append(rs.getId() + ',');
                 writer.append("<testname>, , \n");
-                for(StepResult sr: rs.stepResults){
+                for(StepResult sr: rs.getStepResults()){
                     writer.append(" , ,");
-                    writer.append("<stepname>," +  sr.actualResult +"\n");
+                    writer.append("<stepname>," +  sr.getActualResult() +"\n");
                 }
             }
 
