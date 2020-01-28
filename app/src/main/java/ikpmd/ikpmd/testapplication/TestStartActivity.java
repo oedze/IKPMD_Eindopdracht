@@ -1,5 +1,6 @@
 package ikpmd.ikpmd.testapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+
 import ikpmd.ikpmd.testapplication.models.Test;
+import ikpmd.ikpmd.testapplication.models.TestResult;
 import ikpmd.ikpmd.testapplication.services.RoundService;
 
 public class TestStartActivity extends AppCompatActivity {
@@ -63,6 +70,41 @@ public class TestStartActivity extends AppCompatActivity {
     }
 
     private void skip() {
+
+        final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
+
+        TestResult testResult = new TestResult();
+        testResult.setStepResults(new ArrayList());
+        testResult.setTestId(RoundService.getCurrentTest().getId());
+        testResult.setPassed("Skipped");
+        RoundService.testResults.add(testResult);
+
+        RoundService.currentTestIndex++;
+
+        if (RoundService.currentTestIndex >= RoundService.tests.size()) {
+
+            // Complete round
+
+            Button button_start =  findViewById(R.id.button_teststart_start);
+            Button button_skip =  findViewById(R.id.button_teststart_skip);
+
+            button_start.setEnabled(false);
+            button_skip.setEnabled(false);
+
+            RoundService.saveRoundResult(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    // goto round results
+                    startActivity(intent_gotoRoundResult);
+                }
+            });
+
+        } else {
+
+            // Show next test
+            insertTestValues(RoundService.getCurrentTest());
+        }
+
 
     }
 

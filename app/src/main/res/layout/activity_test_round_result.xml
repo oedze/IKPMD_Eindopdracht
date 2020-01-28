@@ -16,19 +16,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/text_roundresult_result_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="81dp"
-        android:layout_marginEnd="155dp"
-        android:text="Resultaat"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ProgressBar
         android:id="@+id/progress_roundresult"
         style="?android:attr/progressBarStyleHorizontal"
@@ -42,7 +29,21 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintVertical_bias="0.174" />
+
+    <TextView
+        android:id="@+id/text_roundresult_result_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="155dp"
+        android:text="Resultaat"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_roundresult_passed"
@@ -56,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.315" />
+        app:layout_constraintVertical_bias="0.242" />
 
     <ScrollView
         android:id="@+id/scroll_roundresult_tests"
@@ -65,8 +66,10 @@
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toTopOf="@+id/button_roundresult_save"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_roundresult">
+        app:layout_constraintTop_toBottomOf="@+id/progress_roundresult"
+        app:layout_constraintVertical_bias="0.648">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,7 +80,7 @@
                 android:id="@+id/linear_roundresult_passed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.333"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,15 +92,35 @@
                     android:layout_height="wrap_content"
                     android:text="Test01"
                     android:textAlignment="center"
-                    android:visibility="gone" />
+                    android:textColor="@color/colorTestPassed"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_roundresult_skipped"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.333"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_roundresult_test_skipped_template"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Test03"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorTestSkipped"
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear_roundresult_failed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.333"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +132,8 @@
                     android:layout_height="wrap_content"
                     android:text="Test02"
                     android:textAlignment="center"
-                    android:visibility="gone" />
+                    android:textColor="@color/colorTestFailed"
+                    android:visibility="visible" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -118,7 +142,7 @@
         android:id="@+id/text_roundresult_passed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="40dp"
         android:layout_marginBottom="12dp"
         android:text="Passed"
         android:textSize="18sp"
@@ -129,11 +153,22 @@
         android:id="@+id/text_roundresult_failed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="45dp"
         android:layout_marginBottom="12dp"
         android:text="Failed"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/scroll_roundresult_tests"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/text_roundresult_skipped_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="Skipped"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_roundresult_tests"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

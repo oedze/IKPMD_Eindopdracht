@@ -14,8 +14,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -265,109 +267,23 @@ public class TestStepActivity extends AppCompatActivity {
 
         } else {
 
+            final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
+
             System.out.println("Save round epic!");
-            saveRoundResult();
+            Button buttonStepNext = findViewById(R.id.button_step_next);
+            buttonStepNext.setEnabled(false);
+
+            RoundService.saveRoundResult(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+
+                    // Round result
+                    startActivity(intent_gotoRoundResult);
+                }
+            });
 
         }
 
-
-    }
-
-    private void saveRoundResult() {
-
-        // add round
-            // on success
-                // for testresult in testresult
-                    // save testresult
-
-        Round round = new Round();
-        round.setTester(FirebaseService.getUser().getDisplayName());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        round.setDate(formatter.format(new Date()));
-
-        stepResultSaveCounter = 0;
-        stepResultSaveCounter = 0;
-
-        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds", round, new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-                String roundId = documentReference.getId();
-
-                for (TestResult testResult : RoundService.testResults) {
-                    saveTestResult(roundId, testResult);
-                }
-
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
-
-    private void saveTestResult(final String roundId, final TestResult testResult) {
-
-        // add test
-            // on success
-                // for step in step
-
-        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds/"+roundId+"/testresults", testResult, new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-                String testResultId = documentReference.getId();
-
-                for (StepResult stepResult : testResult.getStepResults()) {
-                    stepResultAmount++;
-                    saveStepResult(roundId, testResultId, stepResult);
-                }
-
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-
-    }
-
-    private void saveStepResult(String roundId, String testResultId, StepResult stepResult) {
-
-        // add step
-            // on success
-                // stepResultSaveCounter++
-                // if stepResultSaveCounter >= stepResultAmount
-                    // saveComplete
-
-        FirebaseService.addDocument("projects/" + RoundService.project.getId() + "/rounds/"+roundId+"/testresults/"+testResultId+"/stepresults", stepResult, new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-                stepResultSaveCounter++;
-                if (stepResultSaveCounter >= stepResultAmount) {
-                    saveComplete();
-                }
-
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
-
-    private void saveComplete() {
-
-        // Round result
-        final Intent intent_gotoRoundResult = new Intent(this, TestRoundResultActivity.class);
-        startActivity(intent_gotoRoundResult);
 
     }
 
