@@ -1,11 +1,14 @@
 package ikpmd.ikpmd.testapplication.models;
 
+import com.google.firebase.firestore.Exclude;
+
 public class StepResult {
 
-    public String id;
-    public String actualResult;
-    public String passed;
-    public String stepId;
+    @Exclude
+    private String id;
+    private String actualResult;
+    private String passed;
+    private String stepId;
 
     public StepResult() {}
 
@@ -16,10 +19,12 @@ public class StepResult {
         this.stepId = stepId;
     }
 
+    @Exclude
     public String getId() {
         return id;
     }
 
+    @Exclude
     public void setId(String id) {
         this.id = id;
     }

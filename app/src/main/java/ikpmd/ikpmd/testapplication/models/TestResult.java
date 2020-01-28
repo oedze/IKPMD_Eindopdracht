@@ -6,41 +6,50 @@ import java.util.List;
 
 public class TestResult {
 
-    public String id;
-    public String tester;
-    public String date;
     @Exclude
-    public List<StepResult> stepResults;
+    private String id;
+    private String passed;
+    private String testId;
+    @Exclude
+    private List<StepResult> stepResults;
 
     public TestResult() {}
 
-    public TestResult(String id, String tester, String date) {
+    public TestResult(String id, String passed, String testId) {
         this.id = id;
-        this.tester = tester;
-        this.date = date;
+        this.passed = passed;
+        this.testId = testId;
     }
 
+    @Exclude
     public String getId() {
         return id;
     }
 
+    @Exclude
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getTester() {
-        return tester;
+    public String getPassed() {return passed;}
+
+    public void setPassed(String passed) {this.passed = passed;}
+
+    public String getTestId() {
+        return testId;
     }
 
-    public void setTester(String tester) {
-        this.tester = tester;
+    @Exclude
+    public List<StepResult> getStepResults() {
+        return stepResults;
     }
 
-    public String getDate() {
-        return date;
+    @Exclude
+    public void setStepResults(List<StepResult> stepResults) {
+        this.stepResults = stepResults;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setTestId(String testId) {
+        this.testId = testId;
     }
 }

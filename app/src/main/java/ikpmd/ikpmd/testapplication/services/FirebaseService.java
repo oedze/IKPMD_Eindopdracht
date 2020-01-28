@@ -8,6 +8,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -58,7 +59,7 @@ public class FirebaseService {
                 .addOnFailureListener(failureListener);
     }
 
-    public static void addDocument(String collection, Object document, OnSuccessListener successListener, OnFailureListener failureListener) {
+    public static void addDocument(String collection, Object document, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener) {
 
         String path = "/users/"+getUser().getEmail()+"/"+collection;
 

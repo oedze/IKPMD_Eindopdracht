@@ -160,7 +160,7 @@ public class CreateTestActivity extends AppCompatActivity implements TestPreCond
                     errorCount++;
                 }
                 for(Step step: testStepList){
-                    if(step.details.length() == 0 || step.expectedResult.length() == 0){
+                    if(step.getDetails().length() == 0 || step.getExpectedResult().length() == 0){
                         showError("Incomplete stappen");
                         errorCount++;
                         break;
