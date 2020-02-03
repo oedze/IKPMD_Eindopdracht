@@ -1,5 +1,6 @@
 package ikpmd.ikpmd.testapplication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,6 +61,16 @@ public class TestRoundResultActivity extends AppCompatActivity {
                 export();
             }
         });
+
+        final Intent intent_back = new Intent(this, ProjectActivity.class);
+        intent_back.putExtra("projectId", ProjectService.activeProjecId);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(intent_back);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
 

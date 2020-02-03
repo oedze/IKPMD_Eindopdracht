@@ -1,5 +1,6 @@
 package ikpmd.ikpmd.testapplication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActivityChooserView;
@@ -56,6 +57,8 @@ public class ProjectActivity extends AppCompatActivity{
                 projectName.setText(project.getName());
                 projectDescription.setText(project.getDescription());
                 createTestButton.setEnabled(true);
+                startTestButton.setEnabled(true);
+                viewResultsButton.setEnabled(true);
                 testList.clear();
                 testList.addAll(project.getTests());
                 adapter.notifyDataSetChanged();
@@ -81,7 +84,9 @@ public class ProjectActivity extends AppCompatActivity{
         createTestButton = (Button)findViewById(R.id.button_project_test_create);
         createTestButton.setEnabled(false);
         startTestButton = findViewById(R.id.button_project_start_testing);
+        startTestButton.setEnabled(false);
         viewResultsButton  = (Button)findViewById(R.id.button_project_view_results);
+        viewResultsButton.setEnabled(false);
 
 
          adapter = new ArrayAdapter<Test>(getBaseContext(), activity_test_list, testList);
@@ -128,6 +133,16 @@ public class ProjectActivity extends AppCompatActivity{
                 startActivity(inten_goto_results);
             }
         });
+
+
+        final Intent intent_back = new Intent(this, DashhboardActivity.class);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(intent_back);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
 
     }

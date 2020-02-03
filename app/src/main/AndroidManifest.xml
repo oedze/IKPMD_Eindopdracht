@@ -27,9 +27,8 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".DashhboardActivity"
-            android:label="@string/title_activity_dashhboard"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
