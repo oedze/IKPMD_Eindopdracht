@@ -101,7 +101,7 @@ public class ProjectListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "You clicked on pos: " + position, Toast.LENGTH_SHORT).show();
                 final Intent intent = new Intent(getApplicationContext(), ProjectActivity.class);
                 intent.putExtra("projectId", projects.get(position).getId());
                 startActivity(intent);

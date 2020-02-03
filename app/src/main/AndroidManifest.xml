@@ -24,9 +24,8 @@
         <activity android:name=".StartTestRoundActivity" />
         <activity android:name=".CreateTestActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
         <activity
-            android:name=".DashhboardActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

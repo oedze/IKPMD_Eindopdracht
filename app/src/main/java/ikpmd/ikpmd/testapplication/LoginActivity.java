@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        dashboardIntent = new Intent(this, DashhboardActivity.class);
 
         logInButton = findViewById(R.id.button_login_login);
         emailField = findViewById(R.id.edittext_login_email);
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                             new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
-                                    startActivity(dashboardIntent);
+                                    startActivity(intent);
                                 }
                             }, new OnFailureListener() {
                                 @Override
