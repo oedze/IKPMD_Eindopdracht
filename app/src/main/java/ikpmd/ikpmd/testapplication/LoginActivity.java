@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +27,21 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailField;
     EditText passwordField;
     Button logInButton;
+    TextView gotoRegister;
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Intent intent = new Intent(this, ProjectListActivity.class);
+
+        if(FirebaseService.getUser() != null){
+            startActivity(intent);
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +54,19 @@ public class LoginActivity extends AppCompatActivity {
         logInButton = findViewById(R.id.button_login_login);
         emailField = findViewById(R.id.edittext_login_email);
         passwordField = findViewById(R.id.edittext_login_password);
+        gotoRegister = findViewById(R.id.button_login_register);
 
+        final Intent intent = new Intent(this, ProjectListActivity.class);
 
-        final Intent intent = new Intent(getApplicationContext(), DashhboardActivity.class);
+        onResume();
 
-        if(FirebaseService.getUser() != null){
-            startActivity(intent);
-        }
+        final Intent regIntent = new Intent(this, RegisterActivity.class);
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(regIntent);
+            }
+        });
 
 
         logInButton.setOnClickListener(new View.OnClickListener(){

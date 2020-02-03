@@ -3,12 +3,14 @@ package ikpmd.ikpmd.testapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText password;
     EditText confirmPassword;
     Button registerButton;
+    TextView gotoLoginButton;
 
 
     @Override
@@ -43,6 +46,16 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.edittext_register_password);
         confirmPassword = findViewById(R.id.edittext_register_confirmpassword);
         registerButton = findViewById(R.id.button_register_register);
+        gotoLoginButton = findViewById(R.id.button_register_login);
+
+
+        final Intent gotoLoginIntent = new Intent(this, LoginActivity.class);
+        gotoLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(gotoLoginIntent);
+            }
+        });
 
 
         registerButton.setOnClickListener(new View.OnClickListener(){
