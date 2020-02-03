@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ public class TestRoundResultActivity extends AppCompatActivity {
 
     private boolean testsReceived = false;
     private boolean testResultsReceived = false;
+    private static String TAG = "TestRoundResultActivity";
 
     private static int stepResultLoadCounter;
     private static int stepResultLoadAmount;
@@ -123,7 +125,7 @@ public class TestRoundResultActivity extends AppCompatActivity {
 
     }
 
-    private void loadStepResults(String projectId, String roundId, final OnCompleteListener onCompleteListener) {
+    private void loadStepResults(final String projectId, String roundId, final OnCompleteListener onCompleteListener) {
 
         stepResultLoadAmount = 0;
         stepResultLoadCounter = 0;
@@ -137,13 +139,16 @@ public class TestRoundResultActivity extends AppCompatActivity {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                     testResult.setStepResults(new ArrayList());
-                    for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    for (final DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                         StepResult stepResult = document.toObject(StepResult.class);
                         stepResult.setId(document.getId());
                         testResult.getStepResults().add(stepResult);
+                        insertTestStepNames(projectId, testResult);
+                        insertTestNames(projectId, testResult);
+                        stepResultLoadCounter++;
                     }
 
-                    stepResultLoadCounter++;
+
                     if (stepResultLoadCounter >= stepResultLoadAmount)
                         onCompleteListener.onComplete(null);
 
@@ -159,6 +164,37 @@ public class TestRoundResultActivity extends AppCompatActivity {
         }
 
     }
+
+    private void insertTestNames(String projectId, final TestResult testResult){
+        FirebaseService.getDocument("projects/" + projectId + "/tests", testResult.getTestId(), new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                testResult.setTest(documentSnapshot.toObject(Test.class));
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Something went wrong getting test names");
+            }
+        });
+    }
+
+    private void insertTestStepNames(String projectId, final TestResult testResult){
+        FirebaseService.getCollection("projects/" + projectId + "/tests/" + testResult.getTestId() + "/steps", new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot doc: queryDocumentSnapshots.getDocuments()){
+                    testResult.getStepNames().add(doc.toObject(Step.class));
+                }
+
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
 
     private void insertTestResultValues() {
 

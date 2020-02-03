@@ -2,6 +2,7 @@ package ikpmd.ikpmd.testapplication.models;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestResult {
@@ -12,6 +13,8 @@ public class TestResult {
     private String testId;
     @Exclude
     private List<StepResult> stepResults;
+    private List<Step> stepNames = new ArrayList<>();
+    private Test test;
 
     public TestResult() {}
 
@@ -19,6 +22,26 @@ public class TestResult {
         this.id = id;
         this.passed = passed;
         this.testId = testId;
+    }
+
+    @Exclude
+    public Test getTest() {
+        return test;
+    }
+
+    @Exclude
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    @Exclude
+    public List<Step> getStepNames() {
+        return stepNames;
+    }
+
+    @Exclude
+    public void setStepNames(List<Step> stepNames) {
+        this.stepNames = stepNames;
     }
 
     @Exclude

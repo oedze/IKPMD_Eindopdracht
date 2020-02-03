@@ -12,8 +12,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
+import ikpmd.ikpmd.testapplication.models.Step;
 import ikpmd.ikpmd.testapplication.models.StepResult;
 import ikpmd.ikpmd.testapplication.models.TestResult;
 
@@ -53,10 +55,12 @@ public class ExcelService {
 
             for(TestResult rs : list){
                 writer.append(rs.getId() + ',');
-                writer.append(rs.getTestId() +", " + rs.getPassed()+ ", , \n");
+                writer.append(rs.getTest().getName() +", " + rs.getPassed()+ ", , \n");
+                Iterator<Step> it = rs.getStepNames().iterator();
                 for(StepResult sr: rs.getStepResults()){
+                    Step step = it.next();
                     writer.append(" , , ,");
-                    writer.append("<stepname>," +  sr.getActualResult() +"\n");
+                    writer.append(step.getDetails()+ "," +  sr.getActualResult() +"\n");
 
                 }
             }
