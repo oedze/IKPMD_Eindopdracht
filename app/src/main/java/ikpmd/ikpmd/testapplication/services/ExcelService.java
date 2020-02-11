@@ -54,14 +54,16 @@ public class ExcelService {
             writer.append('\n');
 
             for(TestResult rs : list){
-                writer.append(rs.getId() + ',');
-                writer.append(rs.getTest().getName() +", " + rs.getPassed()+ ", , \n");
-                Iterator<Step> it = rs.getStepNames().iterator();
-                for(StepResult sr: rs.getStepResults()){
-                    Step step = it.next();
-                    writer.append(" , , ,");
-                    writer.append(step.getDetails()+ "," +  sr.getActualResult() +"\n");
+                if(rs.getTest() != null) {
+                    writer.append(rs.getId() + ',');
+                    writer.append(rs.getTest().getName() + ", " + rs.getPassed() + ", , \n");
+                    Iterator<Step> it = rs.getStepNames().iterator();
+                    for (StepResult sr : rs.getStepResults()) {
+                        Step step = it.next();
+                        writer.append(" , , ,");
+                        writer.append(step.getDetails() + "," + sr.getActualResult() + "\n");
 
+                    }
                 }
             }
 

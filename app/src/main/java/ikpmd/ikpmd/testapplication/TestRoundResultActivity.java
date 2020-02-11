@@ -156,9 +156,9 @@ public class TestRoundResultActivity extends AppCompatActivity {
                         testResult.getStepResults().add(stepResult);
                         insertTestStepNames(projectId, testResult);
                         insertTestNames(projectId, testResult);
-                        stepResultLoadCounter++;
-                    }
 
+                    }
+                    stepResultLoadCounter++;
 
                     if (stepResultLoadCounter >= stepResultLoadAmount)
                         onCompleteListener.onComplete(null);

@@ -72,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Object o) {
                                     Toast.makeText(getApplicationContext(), "Succesvolle registratie", Toast.LENGTH_SHORT).show();
+                                    startActivity(gotoLoginIntent);
                                 }
                             }, new OnFailureListener() {
                                 @Override

@@ -135,7 +135,7 @@ public class ProjectActivity extends AppCompatActivity{
         });
 
 
-        final Intent intent_back = new Intent(this, DashhboardActivity.class);
+        final Intent intent_back = new Intent(this, ProjectListActivity.class);
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
